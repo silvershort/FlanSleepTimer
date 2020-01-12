@@ -6,25 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
-import android.net.wifi.WifiNetworkSpecifier;
-import android.os.Binder;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class TimerService extends Service {
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -39,13 +29,13 @@ public class TimerService extends Service {
 
         boolean end = intent.getBooleanExtra("end", false);
 
-        che_stop = intent.getBooleanExtra("che_stop", false);
-        che_media = intent.getBooleanExtra("che_media", false);
-        che_blue = intent.getBooleanExtra("che_blue", false);
-
-        Log.i("로그", "stop : " + che_stop + "\nche_media : " + che_media + "\nche_blue : " + che_blue);
-
         if (end) {
+            che_stop = intent.getBooleanExtra("che_stop", false);
+            che_media = intent.getBooleanExtra("che_media", false);
+            che_blue = intent.getBooleanExtra("che_blue", false);
+
+            Log.i("로그", "stop : " + che_stop + "\nche_media : " + che_media + "\nche_blue : " + che_blue);
+
             if (che_stop) {
                 Log.i("로그", "audioStop()");
                 audioStop();
@@ -95,16 +85,6 @@ public class TimerService extends Service {
             };
             countDownTimer.start();
         }
-//        createNotificationChannel();
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//
-//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setContentText(notiMsg)
-//                .setSmallIcon(R.drawable.ic_brightness_3_black_24dp)
-//                .setContentIntent(pendingIntent)
-//                .build();
-//        startForeground(1, notification);
 
         return START_NOT_STICKY;
     }

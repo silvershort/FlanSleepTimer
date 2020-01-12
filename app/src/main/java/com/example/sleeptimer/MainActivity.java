@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,15 @@ public class MainActivity extends AppCompatActivity {
     PendingIntent pendingIntent;
     Intent intent;
     final int REQUEST_CODE = 101;
+    final int 일반 = 0;
+    final int 졸음 = 1;
+    final int 수면 = 2;
+    int flan = 0;
 
     CheckBox che_stop, che_media, che_blue;
     TextView tv_timerTime;
     Button btn_1hour, btn_30min, btn_10min, btn_reset, btn_start;
+    ImageView iv_char;
 
     long baseTime = 0;
     long setTime = 0;
@@ -44,14 +50,25 @@ public class MainActivity extends AppCompatActivity {
         Log.i("메인로그", "onResume() 호출");
         // sharedPreferences에 저장된 값을 불러옴
         // 단, 타이머가 이미 종료됬을 경우 (저장된 시간값이 현재 시간보다 작을 경우) 저장하지 않음
+        Log.i("로그", "실행상태 : " + sharedPreferences.getBoolean("timer_run", false));
         if (sharedPreferences.getBoolean("timer_run", false)) {
             baseTime = sharedPreferences.getLong("baseTime", System.currentTimeMillis());
+            setTime = sharedPreferences.getLong("setTime", 0);
             if (baseTime > System.currentTimeMillis()) {
                 timer_run = true;
                 btn_start.setText("중지");
+                if (baseTime - System.currentTimeMillis() <= setTime * 1000 * 60 / 2) {
+                    Log.i("로그", "setTime : " + setTime);
+                    if (flan == 일반) {
+                        iv_char.setImageResource(R.drawable.image2);
+                        flan = 졸음;
+                    }
+                }
                 myTimer.sendEmptyMessage(0);
             } else {
                 baseTime = 0;
+                iv_char.setImageResource(R.drawable.image3);
+                flan = 수면;
                 timer_run = false;
             }
         }
@@ -73,9 +90,14 @@ public class MainActivity extends AppCompatActivity {
         btn_10min = findViewById(R.id.btn_10min);
         btn_reset = findViewById(R.id.btn_reset);
         btn_start = findViewById(R.id.btn_start);
+        iv_char = findViewById(R.id.iv_char);
 
         sharedPreferences = getSharedPreferences("sTimer", MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
+        if (flan == 일반) {
+            iv_char.setImageResource(R.drawable.image1);
+        }
 
         // 체크박스 설정을 불러옴
         che_stop.setChecked(sharedPreferences.getBoolean("che_stop", true));
@@ -109,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (setTime >= 720) return;
                 if (!timer_run) {
-                    setTime += 1;
+                    setTime += 10;
                     renewTimer();
                 }
             }
@@ -136,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 if (timer_run) {
                     stopTimer();
                     stopService();
+                    flan = 일반;
+                    iv_char.setImageResource(R.drawable.image1);
                     btn_start.setText("시작");
                 } else {
                     startTimer();
@@ -144,11 +168,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        iv_char.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flan == 수면) {
+                    iv_char.setImageResource(R.drawable.image2);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            iv_char.setImageResource(R.drawable.image1);
+                            editor.putBoolean("timer_run", false).commit();
+                            flan = 일반;
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
     public void stopTimer() {
-        editor.putBoolean("timer_rune", false).commit();
+//        editor.putBoolean("timer_run", false).commit();
         editor.remove("baseTime").commit();
+        editor.remove("setTime").commit();
         myTimer.removeMessages(0);
         setTime = 0;
         renewTimer();
@@ -167,12 +210,22 @@ public class MainActivity extends AppCompatActivity {
         myTimer.sendEmptyMessage(0);
         timer_run = true;
 
+        iv_char.setImageResource(R.drawable.image1);
+
         editor.putBoolean("timer_run", true);
         editor.putLong("baseTime", baseTime);
+        editor.putLong("setTime", setTime);
         editor.commit();
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         intent = new Intent(getApplicationContext(), TimerReceiver.class);
+
+        if (che_stop.isChecked())
+            intent.putExtra("che_stop", true);
+        if (che_media.isChecked())
+            intent.putExtra("che_media", true);
+        if (che_blue.isChecked())
+            intent.putExtra("che_blue", true);
 
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -194,13 +247,6 @@ public class MainActivity extends AppCompatActivity {
     public void startService() {
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra("baseTime", baseTime);
-        if (che_stop.isChecked())
-            serviceIntent.putExtra("che_stop", true);
-        if (che_media.isChecked())
-            serviceIntent.putExtra("che_media", true);
-        if (che_blue.isChecked())
-            serviceIntent.putExtra("che_blue", true);
-
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
@@ -216,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
 
     Handler myTimer = new Handler() {
         public void handleMessage(Message msg) {
-            Log.i("로그", "핸들러 동작 중");
             tv_timerTime.setText(getTimeOut());
             if (timer_run){
                 myTimer.sendEmptyMessage(0);
@@ -232,7 +277,16 @@ public class MainActivity extends AppCompatActivity {
         if (outTime <= 0) {
             btn_start.setText("시작");
             timer_run = false;
+            iv_char.setImageResource(R.drawable.image3);
+//            editor.putBoolean("timer_run", false).commit();
+            flan = 수면;
             return "00:00:00";
+        }
+        if (outTime <= setTime * 1000 * 60 / 2) {
+            if (flan == 일반) {
+                iv_char.setImageResource(R.drawable.image2);
+                flan = 졸음;
+            }
         }
         String easy_outTime = String.format("%02d:%02d:%02d", outTime / 1000 / 60 / 60, (outTime / 1000 / 60) % 60, (outTime / 1000) % 60);
         return easy_outTime;
@@ -248,23 +302,4 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
         super.onStop();
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
