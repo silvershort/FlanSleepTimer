@@ -1,26 +1,21 @@
 # FlanSleepTimer
 
- It is a simple application that stops playing music after a specified time.
+It is a simple application that stops playing music after a specified time.
  
- 
- It works as a foreground service, so it's okay to close the app completely after running the timer.
+It works as a foreground service, so it's okay to close the app completely after running the timer.
  
- 
- Wake up to the sleeping flan after the timer expires.
+Wake up to the sleeping flan after the timer expires.
  
-- 1.1v patch content
+ 
+1.1v patch content
 
+-Delete receiver
 
-Delete receiver
+-Delete Alarm Manager
 
+-Delete counttown timer
 
-Delete Alarm Manager
-
-
-Delete counttown timer
-
-
-Fixed timers to only be managed by the foreground service as threads
+-Fixed timers to only be managed by the foreground service as threads
 
 
  
