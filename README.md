@@ -13,7 +13,7 @@ Delete receiver
 
 Delete Alarm Manager
 
-Delete counttown timer
+Delete Countdown timer
 
 Fixed timers to only be managed by the foreground service as threads
 
