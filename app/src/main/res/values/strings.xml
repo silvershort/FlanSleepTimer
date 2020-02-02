@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">SleepTimer</string>
+    <string name="app_name">FlanSleepTimer</string>
+
+    <string name="btn_init">START</string>
+    <string name="btn_run">STOP</string>
+    <string name="btn_reset">RESET</string>
+
+    <string name="btn_1hour">+1H</string>
+    <string name="btn_30Minute">+30M</string>
+    <string name="btn_5Minute">+5M</string>
+
+    <string name="cb_media_stop">Stop music playing</string>
+    <string name="cb_media_mute">Mute media sounds</string>
+    <string name="cb_blue">Bluetooth disconnect</string>
+
+    <string name="nothing">Please select a function of the timer to perform</string>
+    <string name="timeout">The timer has expired</string>
+    <string name="leftTime">minute left to timer</string>
 </resources>

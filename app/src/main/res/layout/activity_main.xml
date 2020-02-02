@@ -18,15 +18,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:checked="true"
-            android:text="재생중인 음악 정지"
+            android:text="@string/cb_media_stop"
             android:textSize="20sp" />
 
         <CheckBox
-            android:id="@+id/che_media"
+            android:id="@+id/che_mute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="미디어 소리 끄기"
+            android:text="@string/cb_media_mute"
             android:textSize="20sp" />
 
         <CheckBox
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="블루투스 연결 해제"
+            android:text="@string/cb_blue"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="+1시간"
+            android:text="@string/btn_1hour"
             android:textSize="20sp" />
 
         <Button
@@ -71,15 +71,15 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="+30분"
+            android:text="@string/btn_30Minute"
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/btn_10min"
+            android:id="@+id/btn_5min"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="+10분"
+            android:text="@string/btn_5Minute"
             android:textSize="20sp" />
 
         <Button
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="초기화"
+            android:text="@string/btn_reset"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:text="시작"
+        android:text="@string/btn_init"
         android:textSize="20sp" />
 
     <ImageView

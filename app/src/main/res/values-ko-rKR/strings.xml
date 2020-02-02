@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">플랑수면타이머</string>
+
+    <string name="btn_run">중지</string>
+    <string name="btn_reset">리셋</string>
+    <string name="btn_init">시작</string>
+
+    <string name="cb_media_stop">재생중인 음악 정지</string>
+    <string name="cb_media_mute">미디어 소리 끄기</string>
+    <string name="cb_blue">블루투스 연결 해제</string>
+
+    <string name="nothing">타이머가 수행할 기능을 선택해주세요</string>
+    <string name="leftTime">분 남았습니다</string>
+    <string name="timeout">타이머가 종료되었습니다</string>
+    <string name="btn_1hour">+1시간</string>
+    <string name="btn_30Minute">+30분</string>
+    <string name="btn_5Minute">+5분</string>
+</resources>
