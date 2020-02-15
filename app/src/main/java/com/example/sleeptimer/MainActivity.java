@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         timer_run = true;
 
         iv_char.setImageResource(R.drawable.image1);
+        flan = awake;
 
         editor.putBoolean("timer_run", true);
         editor.putLong("baseTime", baseTime);
