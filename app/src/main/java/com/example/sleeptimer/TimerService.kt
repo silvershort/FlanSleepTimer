@@ -26,6 +26,7 @@ class TimerService : Service() {
     var che_mute = false
     var che_blue = false
     var alive = true
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val run = intent.getBooleanExtra("run", false)
         if (!run) {
