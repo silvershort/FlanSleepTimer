@@ -7,13 +7,12 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
@@ -129,14 +128,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     /* 뷰 클릭 함수 영역 끝 */
 
     fun stopTimer() {
-        editor.putBoolean("timerRun", false).commit();
+        editor.putBoolean("timerRun", false).commit()
         editor.remove("baseTime").commit()
         editor.remove("setTime").commit()
         myTimer.removeMessages(0)
         _time.value = 0
     }
 
-    fun startTimer() {
+    private fun startTimer() {
         myTimer.sendEmptyMessage(0)
         _state.value = Flan.AWAKE.state
         editor.putBoolean("timerRun", true)
@@ -145,7 +144,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
         editor.commit()
     }
 
-    fun startService() {
+    private fun startService() {
         val serviceIntent = Intent(applicationContext, TimerService::class.java)
         serviceIntent.putExtra("baseTime", baseTime)
         serviceIntent.putExtra("stop", stop.value)
@@ -154,7 +153,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
         ContextCompat.startForegroundService(applicationContext, serviceIntent)
     }
 
-    fun stopService() {
+    private fun stopService() {
         val serviceIntent = Intent(applicationContext, TimerService::class.java)
         applicationContext.stopService(serviceIntent)
     }
