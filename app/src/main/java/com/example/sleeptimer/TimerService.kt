@@ -39,7 +39,7 @@ class TimerService : Service() {
         timeThread = Thread(Runnable {
             try {
                 while (!Thread.currentThread().isInterrupted) {
-                    Log.i("서비스로그", "쓰레드 작동")
+                    Log.d("@@@", "쓰레드 작동")
                     createNotificationChannel()
                     val notificationIntent = Intent(applicationContext, MainActivity::class.java)
                     notificationIntent.putExtra("run", true)
