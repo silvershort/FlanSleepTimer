@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">FlanSleepTimer</string>
 
-    <string name="btn_init">START</string>
-    <string name="btn_run">STOP</string>
+    <string name="btn_start">START</string>
+    <string name="btn_stop">STOP</string>
     <string name="btn_reset">RESET</string>
 
     <string name="btn_1hour">+1H</string>

@@ -1,110 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/timerSettingLaylout"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.sleeptimer.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-        <CheckBox
-            android:id="@+id/che_stop"
+        <LinearLayout
+            android:id="@+id/timerSettingLaylout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/che_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:checked="@={viewModel.stop}"
+                android:text="@string/cb_media_stop"
+                android:textSize="20sp" />
+
+            <CheckBox
+                android:id="@+id/che_mute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.mute}"
+                android:text="@string/cb_media_mute"
+                android:textSize="20sp" />
+
+            <CheckBox
+                android:id="@+id/che_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={viewModel.blue}"
+                android:text="@string/cb_blue"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_timerTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:checked="true"
-            android:text="@string/cb_media_stop"
-            android:textSize="20sp" />
+            android:gravity="center"
+            android:text='@{String.format("%02d:%02d:%02d", viewModel.time / 1000L / 60L / 60L, viewModel.time / 1000L / 60L % 60L, viewModel.time / 1000L % 60L)}'
+            android:textSize="80sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <CheckBox
-            android:id="@+id/che_mute"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/timeControlLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/cb_media_mute"
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/btn_start">
 
-        <CheckBox
-            android:id="@+id/che_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/cb_blue"
-            android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_1hour"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_1hour"
+                android:textSize="20sp"
+                android:onClick="@{()->viewModel.timeAdd(60)}"/>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_30min"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_30Minute"
+                android:textSize="20sp"
+                android:onClick="@{()->viewModel.timeAdd(30)}"/>
 
-    <TextView
-        android:id="@+id/tv_timerTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/timeControlLayout"
-        android:layout_below="@id/timerSettingLaylout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="00:00:00"
-        android:textSize="80sp" />
+            <Button
+                android:id="@+id/btn_5min"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_5Minute"
+                android:textSize="20sp"
+                android:onClick="@{()->viewModel.timeAdd(5)}"/>
 
-    <LinearLayout
-        android:id="@+id/timeControlLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_start"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_1hour"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="@string/btn_1hour"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btn_30min"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="@string/btn_30Minute"
-            android:textSize="20sp" />
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/btn_reset"
+                android:textSize="20sp"
+                android:onClick="@{()->viewModel.timeReset()}"/>
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btn_5min"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="@string/btn_5Minute"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:onClick="@{()->viewModel.timerOnOff()}"
+            app:timerString="@{viewModel.run}"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <Button
-            android:id="@+id/btn_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="@string/btn_reset"
-            android:textSize="20sp" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_char"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:alpha="0.5"
+            android:scaleType="fitCenter"
+            android:onClick="@{()->viewModel.flanTouch()}"
+            app:flanImage="@{viewModel.state}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498"
+            tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/btn_init"
-        android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/iv_char"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_centerInParent="true"
-        android:alpha="0.5"
-        android:scaleType="fitCenter" />
-
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

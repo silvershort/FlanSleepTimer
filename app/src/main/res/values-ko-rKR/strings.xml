@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">플랑수면타이머</string>
 
-    <string name="btn_run">중지</string>
+    <string name="btn_stop">중지</string>
     <string name="btn_reset">리셋</string>
-    <string name="btn_init">시작</string>
+    <string name="btn_start">시작</string>
 
     <string name="cb_media_stop">재생중인 음악 정지</string>
     <string name="cb_media_mute">미디어 소리 끄기</string>
