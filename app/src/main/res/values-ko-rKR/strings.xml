@@ -16,4 +16,6 @@
     <string name="btn_1hour">+1시간</string>
     <string name="btn_30Minute">+30분</string>
     <string name="btn_5Minute">+5분</string>
+    <string name="start_app">앱 시작</string>
+    <string name="start_timer">타이머 시작</string>
 </resources>
