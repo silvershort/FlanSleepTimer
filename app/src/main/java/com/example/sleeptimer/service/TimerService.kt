@@ -1,22 +1,19 @@
-package com.example.sleeptimer
+package com.example.sleeptimer.service
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
-import android.bluetooth.BluetoothManager
-import android.content.Context
+import android.app.*
 import android.content.Intent
-import android.media.AudioFocusRequest
-import android.media.AudioManager
-import android.os.*
+import android.os.IBinder
+import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.sleeptimer.AlarmReceiver
+import com.example.sleeptimer.R
+import com.example.sleeptimer.util.TimerFunction
+import com.example.sleeptimer.view.MainActivity
 
 class TimerService : Service() {
     private var timeThread: Thread? = null
-    private var muteHandler: Handler? = null
     private var baseTime: Long = 0
     private var outTime: Long = 0
     private var msg: String? = null
@@ -35,6 +32,9 @@ class TimerService : Service() {
         }
         baseTime = intent.getLongExtra("baseTime", System.currentTimeMillis())
         outTime = baseTime - System.currentTimeMillis()
+        setAlarmManager(outTime)
+
+        // 포그라운드 서비스에서 쓰레드를 돌리면서 노티피케이션을 업데이트 해주고 최종적으로 타이머 동작을 하게 한다.
         timeThread = Thread {
             try {
                 while (!Thread.currentThread().isInterrupted) {
@@ -71,23 +71,15 @@ class TimerService : Service() {
                 if (alive) {
                     Log.i("로그", "stop : $cheStop\nche_mute : $cheMute\nche_blue : $cheBlue")
                     if (cheStop) {
-                        Log.i("로그", "audioStop()")
-                        audioStop()
+                        TimerFunction.audioStop(applicationContext)
                     }
                     if (cheBlue) {
-                        Log.i("로그", "setBlue()")
-                        setBlue()
+                        TimerFunction.offBlue(applicationContext)
                     }
                     if (cheMute) {
-                        muteHandler = Handler(Looper.getMainLooper())
-                        muteHandler!!.postDelayed({
-                            Log.i("로그", "mute()")
-                            mute()
-                            timeout()
-                        }, 1000)
-                    } else {
-                        timeout()
+                        TimerFunction.audioMute(applicationContext)
                     }
+                    timeout()
                 }
             }
         }
@@ -105,7 +97,19 @@ class TimerService : Service() {
         val mainIntent = Intent(applicationContext, MainActivity::class.java)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(mainIntent)
-        stopForeground(STOP_FOREGROUND_DETACH)
+        stopSelf()
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun setAlarmManager(triggerTime: Long) {
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
+        val alarmPendingIntent = PendingIntent.getBroadcast(applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerTime,
+            alarmPendingIntent
+        )
     }
 
     private fun createNotificationChannel() {
@@ -123,30 +127,6 @@ class TimerService : Service() {
             NotificationManager::class.java
         )
         manager.createNotificationChannel(serviceChannel)
-    }
-
-    // 블루투스 끄기
-    private fun setBlue() {
-        val bluetoothManger: BluetoothManager = applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bluetoothManger.adapter.disable()
-    }
-
-    // 오디오 정지
-    private fun audioStop() {
-        val mAudioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
-        val audioFocusRequest: AudioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-            .setFocusGain(AudioManager.AUDIOFOCUS_GAIN)
-            .setWillPauseWhenDucked(true)
-            .setAcceptsDelayedFocusGain(true)
-            .setOnAudioFocusChangeListener { }
-            .build()
-        mAudioManager.requestAudioFocus(audioFocusRequest)
-    }
-
-    // 뮤트
-    private fun mute() {
-        val mAudioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
     }
 
     override fun onBind(intent: Intent): IBinder? {

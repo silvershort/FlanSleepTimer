@@ -11,6 +11,9 @@ import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.sleeptimer.NewAppWidget.Companion.ACTION_BTN
+import com.example.sleeptimer.service.TimerService
+import com.example.sleeptimer.util.SharedPreferenceManager
+import com.example.sleeptimer.view.MainActivity
 
 /**
  * Implementation of App Widget functionality.
@@ -37,27 +40,26 @@ class NewAppWidget : AppWidgetProvider() {
         val action = intent?.action
         if (action == ACTION_BTN) {
             context?.let {
-                val sharedPreferences = it.getSharedPreferences("sTimer", AppCompatActivity.MODE_PRIVATE)
-                val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-                val run: Boolean = sharedPreferences.getBoolean("timerRun", false)
-                val stop: Boolean = sharedPreferences.getBoolean("stop", true)
-                val mute: Boolean = sharedPreferences.getBoolean("mute", false)
-                val blue: Boolean = sharedPreferences.getBoolean("blue", false)
-                var baseTime: Long = sharedPreferences.getLong("baseTime", 0)
-                val setTime: Long = (30 * 1000 * 60).toLong()
+                val preferenceManager = SharedPreferenceManager.getInstance(context)
+                val run: Boolean = preferenceManager.getTimerRun()
+                val stop: Boolean = preferenceManager.getStop()
+                val mute: Boolean = preferenceManager.getMute()
+                val blue: Boolean = preferenceManager.getBlue()
+                var baseTime: Long = preferenceManager.getBaseTime()
+                val setTime: Long = preferenceManager.getLastTime()
 
                 if (run) {
-                    if (baseTime < System.currentTimeMillis()) {
+                    if (baseTime > System.currentTimeMillis()) {
                         return
                     }
                 }
 
                 baseTime = System.currentTimeMillis() + setTime + 1000
-                editor.putBoolean("timerRun", true)
-                editor.putLong("baseTime", baseTime)
-                editor.putLong("setTime", setTime)
-                editor.apply()
+
+                preferenceManager.putTimerRun(true)
+                preferenceManager.putBaseTime(baseTime)
+                preferenceManager.putSetTime(setTime)
+                preferenceManager.editorApply()
 
                 val serviceIntent = Intent(context.applicationContext, TimerService::class.java)
                 serviceIntent.putExtra("baseTime", baseTime)

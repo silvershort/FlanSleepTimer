@@ -1,18 +1,21 @@
-package com.example.sleeptimer
+package com.example.sleeptimer.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.sleeptimer.R
+import com.example.sleeptimer.service.TimerService
+import com.example.sleeptimer.util.Flan
+import com.example.sleeptimer.util.SharedPreferenceManager
 
 class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
@@ -23,9 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     // 라이프사이클
 
     // 체크박스 설정 및 타이머 시간을 저장하기 위한 sharedPreferences
-    private val sharedPreferences: SharedPreferences by lazy {
-        applicationContext.getSharedPreferences("sTimer", AppCompatActivity.MODE_PRIVATE) }
-    private val editor: SharedPreferences.Editor by lazy { sharedPreferences.edit() }
+    private val preferenceManager = SharedPreferenceManager.getInstance(applicationContext)
 
     // 타이머 텍스트와 연결된 라이브데이터
     private var _time = MutableLiveData<Long>()
@@ -49,25 +50,32 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     // 타이머를 제어하는 핸들러
     private val myTimer: Handler
 
-    // 라이브데이타 초기화
     init {
-        _state.value = Flan.AWAKE.state
-        _time.value = sharedPreferences.getLong("setTime", 0)
-        baseTime = sharedPreferences.getLong("baseTime", 0)
-        run.value = sharedPreferences.getBoolean("timerRun", false)
-        stop.value = sharedPreferences.getBoolean("stop", true)
-        mute.value = sharedPreferences.getBoolean("mute", false)
-        blue.value = sharedPreferences.getBoolean("blue", false)
+        // 핸들러 세팅
         myTimer = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 _time.value = timeOut()
-                if (run.value!!) {
-                    sendEmptyMessage(0)
-                } else {
-                    stopTimer()
+                when (run.value) {
+                    true -> {
+                        sendEmptyMessage(0)
+                    }
+                    null, false -> {
+                        stopTimer()
+                    }
                 }
             }
         }
+
+        stop.value = preferenceManager.getStop()
+        mute.value = preferenceManager.getMute()
+        blue.value = preferenceManager.getBlue()
+    }
+
+    fun viewModelDataSet() {
+        _time.value = preferenceManager.getSetTime()
+        baseTime = preferenceManager.getBaseTime()
+        run.value = preferenceManager.getTimerRun()
+        Log.d("@@@", "run : ${run.value}")
 
         if (run.value!!) {
             if (baseTime > System.currentTimeMillis()) {
@@ -75,9 +83,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
             } else {
                 stopTimer()
                 run.value = false
-                _state.value = Flan.SLEEP.state
+//                _state.value = Flan.SLEEP.state
             }
         }
+    }
+
+    fun timerPause() {
+        myTimer.removeMessages(0)
     }
 
     /* 뷰 클릭 함수 영역 시작 */
@@ -119,7 +131,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
             Flan.SLEEP.state -> {
                 _state.value = Flan.SLEEPY.state
                 Handler(Looper.getMainLooper()).postDelayed({
-                    editor.putBoolean("timer_run", false).commit()
                     _state.value = Flan.AWAKE.state
                 }, 2000)
             }
@@ -128,9 +139,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     /* 뷰 클릭 함수 영역 끝 */
 
     fun stopTimer() {
-        editor.putBoolean("timerRun", false).commit()
-        editor.remove("baseTime").commit()
-        editor.remove("setTime").commit()
+        preferenceManager.putTimerRun(false)
+        preferenceManager.removeBaseTime()
+        preferenceManager.removeSetTime()
+        preferenceManager.editorApply()
         myTimer.removeMessages(0)
         _time.value = 0
     }
@@ -138,10 +150,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     private fun startTimer() {
         myTimer.sendEmptyMessage(0)
         _state.value = Flan.AWAKE.state
-        editor.putBoolean("timerRun", true)
-        editor.putLong("baseTime", baseTime)
-        editor.putLong("setTime", _time.value!!)
-        editor.commit()
+        preferenceManager.putTimerRun(true)
+        preferenceManager.putSetTime(_time.value!!)
+        // 마지막 시간 설정을 저장해서 위젯에서 빠른시작을 했을때 시간을 자동으로 설정해준다.
+        preferenceManager.putLastTime(_time.value!!)
+        preferenceManager.putBaseTime(baseTime)
+        preferenceManager.editorApply()
     }
 
     private fun startService() {
@@ -161,12 +175,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
     private fun timeOut(): Long {
         val now = System.currentTimeMillis()
         val outTime = baseTime - now
+        val setTime = preferenceManager.getSetTime()
         if (outTime <= 0) {
             run.value = false
             _state.value = Flan.SLEEP.state
             return 0
         }
-        if (outTime <= _time.value!! / 2) {
+        if (outTime <= setTime / 2) {
             if (_state.value == Flan.AWAKE.state) {
                 _state.value = Flan.SLEEPY.state
             }
@@ -176,11 +191,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
     override fun onCleared() {
         // 체크박스 상태 저장
-        editor.putBoolean("stop", stop.value!!)
-        editor.putBoolean("mute", mute.value!!)
-        editor.putBoolean("blue", blue.value!!)
-        editor.commit()
-
+        preferenceManager.putStop(stop.value!!)
+        preferenceManager.putMute(mute.value!!)
+        preferenceManager.puttBlue(blue.value!!)
+        preferenceManager.editorApply()
         super.onCleared()
     }
 }

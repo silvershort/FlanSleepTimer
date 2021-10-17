@@ -1,4 +1,4 @@
-package com.example.sleeptimer
+package com.example.sleeptimer.util
 
 enum class Flan (val state: Int) {
     AWAKE(0),
