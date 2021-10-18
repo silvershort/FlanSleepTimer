@@ -106,7 +106,7 @@ class TimerService : Service() {
         val alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
         val alarmPendingIntent = PendingIntent.getBroadcast(applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            AlarmManager.RTC_WAKEUP,
             triggerTime,
             alarmPendingIntent
         )
