@@ -1,24 +1,18 @@
 # FlanSleepTimer
 
-It is a simple application that stops playing music after a specified time.
- 
-It works as a foreground service, so it's okay to close the app completely after running the timer.
- 
-Wake up to the sleeping flan after the timer expires.
- 
- 
--1.1v patch content
+지정된 시간이 끝나면 선택한 동작을 수행하는 수면 타이머 입니다.
 
-Delete receiver
 
-Delete Alarm Manager
+사용된 기술 스택
+- FireBase RemoteConfig : 앱버전 체크 기능
+- DataBinding & LiveData : 데이터와 xml 바인딩
+- Widget : 위젯기능
+- ForegroundService : 앱을 종료하더라도 포그라운드 서비스로 타이머 기능 수행
+- AlarmManager : Doze 상태에 들어갔을때 타이머를 동작시키는 기능
 
-Delete Countdown timer
 
-Fixed timers to only be managed by the foreground service as threads
 
- 
-apk download : https://github.com/silvershort/FlanSleepTimer/raw/master/apk/app-debug.apk
+
 
 
 ![이미지](./image/read_image.jpg)
