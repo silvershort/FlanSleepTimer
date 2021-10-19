@@ -1,10 +1,10 @@
-package com.example.sleeptimer.viewmodel
+package com.silver.sleeptimer.viewmodel
 
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.sleeptimer.R
-import com.example.sleeptimer.util.Flan
+import com.silver.sleeptimer.util.Flan
 
 object BindingUtil {
     @JvmStatic

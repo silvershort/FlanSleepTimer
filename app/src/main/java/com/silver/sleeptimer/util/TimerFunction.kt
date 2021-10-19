@@ -1,4 +1,4 @@
-package com.example.sleeptimer.util
+package com.silver.sleeptimer.util
 
 import android.app.Service
 import android.bluetooth.BluetoothManager

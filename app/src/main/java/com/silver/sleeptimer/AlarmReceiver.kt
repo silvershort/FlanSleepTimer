@@ -1,12 +1,11 @@
-package com.example.sleeptimer
+package com.silver.sleeptimer
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.example.sleeptimer.service.TimerService
-import com.example.sleeptimer.util.SharedPreferenceManager
-import com.example.sleeptimer.util.TimerFunction
+import com.silver.sleeptimer.service.TimerService
+import com.silver.sleeptimer.util.SharedPreferenceManager
+import com.silver.sleeptimer.util.TimerFunction
 
 class AlarmReceiver : BroadcastReceiver() {
     // Foreground 쓰레드 동작만으로는 doze 상태에 들어갔을때 타이머의 기능을 제대로 할 수 없음.
@@ -17,7 +16,6 @@ class AlarmReceiver : BroadcastReceiver() {
             val baseTime = preferenceManager.getBaseTime() - 1000
             val now = System.currentTimeMillis()
             if (baseTime < now) {
-                Log.d("@@@", "타이머 동작")
                 // 타이머 동작 실행
                 if (preferenceManager.getStop()) {
                     TimerFunction.audioStop(context)

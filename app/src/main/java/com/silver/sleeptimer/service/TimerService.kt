@@ -1,4 +1,4 @@
-package com.example.sleeptimer.service
+package com.silver.sleeptimer.service
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -7,12 +7,15 @@ import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.example.sleeptimer.AlarmReceiver
+import com.silver.sleeptimer.AlarmReceiver
 import com.example.sleeptimer.R
-import com.example.sleeptimer.util.TimerFunction
-import com.example.sleeptimer.view.MainActivity
+import com.silver.sleeptimer.util.TimerFunction
+import com.silver.sleeptimer.view.MainActivity
 
 class TimerService : Service() {
+    companion object {
+        const val CHANNEL_ID = "ForegroundServiceChannel"
+    }
     private var timeThread: Thread? = null
     private var baseTime: Long = 0
     private var outTime: Long = 0
@@ -131,9 +134,5 @@ class TimerService : Service() {
 
     override fun onBind(intent: Intent): IBinder? {
         return null
-    }
-
-    companion object {
-        const val CHANNEL_ID = "ForegroundServiceChannel"
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sleeptimer.view
+package com.silver.sleeptimer.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.sleeptimer.R
 import com.example.sleeptimer.databinding.ActivityMainBinding
-import com.example.sleeptimer.viewmodel.MainViewModel
+import com.silver.sleeptimer.firebase.AppVersionCheck
+import com.silver.sleeptimer.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,6 +22,10 @@ class MainActivity : AppCompatActivity() {
             viewModel = mainViewModel
         }
         setContentView(binding.root)
+
+        // 앱 버전 체크
+        val appVersionCheck = AppVersionCheck(this@MainActivity)
+        appVersionCheck.versionCheck()
     }
 
     // 위젯으로 타이머 실행했을 경우 앱 실행시 데이터를 최신화해준다

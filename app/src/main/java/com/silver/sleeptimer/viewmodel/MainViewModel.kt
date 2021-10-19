@@ -1,4 +1,4 @@
-package com.example.sleeptimer.viewmodel
+package com.silver.sleeptimer.viewmodel
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -13,9 +13,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.sleeptimer.R
-import com.example.sleeptimer.service.TimerService
-import com.example.sleeptimer.util.Flan
-import com.example.sleeptimer.util.SharedPreferenceManager
+import com.silver.sleeptimer.service.TimerService
+import com.silver.sleeptimer.util.Flan
+import com.silver.sleeptimer.util.SharedPreferenceManager
 
 class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
@@ -75,7 +75,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
         _time.value = preferenceManager.getSetTime()
         baseTime = preferenceManager.getBaseTime()
         run.value = preferenceManager.getTimerRun()
-        Log.d("@@@", "run : ${run.value}")
 
         if (run.value!!) {
             if (baseTime > System.currentTimeMillis()) {

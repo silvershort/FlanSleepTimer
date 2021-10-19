@@ -16,8 +16,10 @@
     <string name="nothing">Please select a function of the timer to perform</string>
     <string name="timeout">The timer has expired</string>
     <string name="leftTime">minute left to timer</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Flansleeptimer widget</string>
     <string name="start_app">Start App</string>
     <string name="start_timer">Start Timer</string>
+    <string name="app_update">New version availble. Please update app</string>
+    <string name="common_update">Update</string>
+    <string name="common_cancel">Cancel</string>
 </resources>

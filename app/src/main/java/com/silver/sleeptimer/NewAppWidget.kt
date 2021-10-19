@@ -1,4 +1,4 @@
-package com.example.sleeptimer
+package com.silver.sleeptimer
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -6,14 +6,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.widget.RemoteViews
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.sleeptimer.NewAppWidget.Companion.ACTION_BTN
-import com.example.sleeptimer.service.TimerService
-import com.example.sleeptimer.util.SharedPreferenceManager
-import com.example.sleeptimer.view.MainActivity
+import com.example.sleeptimer.R
+import com.silver.sleeptimer.NewAppWidget.Companion.ACTION_BTN
+import com.silver.sleeptimer.service.TimerService
+import com.silver.sleeptimer.util.SharedPreferenceManager
+import com.silver.sleeptimer.view.MainActivity
 
 /**
  * Implementation of App Widget functionality.
