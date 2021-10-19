@@ -1,4 +1,4 @@
-package com.example.sleeptimer.util
+package com.silver.sleeptimer.util
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -37,10 +37,10 @@ class SharedPreferenceManager(private val context: Context) {
 
     fun removeSetTime() { editor.remove("setTime") }
     fun removeBaseTime() { editor.remove("baseTime") }
-    fun removeTimerRun() { editor.remove("timerRun") }
-    fun removeStop() { editor.remove("stop") }
-    fun removeMute() { editor.remove("mute") }
-    fun removeBlue() { editor.remove("blue") }
+//    fun removeTimerRun() { editor.remove("timerRun") }
+//    fun removeStop() { editor.remove("stop") }
+//    fun removeMute() { editor.remove("mute") }
+//    fun removeBlue() { editor.remove("blue") }
 
     fun editorApply() { editor.apply() }
 }

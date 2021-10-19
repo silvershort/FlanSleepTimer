@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <receiver
-            android:name=".NewAppWidget"
+            android:name="com.silver.sleeptimer.NewAppWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -29,15 +29,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
-        <receiver android:name=".AlarmReceiver"/>
+        <receiver android:name="com.silver.sleeptimer.AlarmReceiver"/>
 
         <service
-            android:name=".service.TimerService"
+            android:name="com.silver.sleeptimer.service.TimerService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".view.MainActivity"
+            android:name="com.silver.sleeptimer.view.MainActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>

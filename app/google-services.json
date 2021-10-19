@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "864098387183",
+    "project_id": "flansleeptimer",
+    "storage_bucket": "flansleeptimer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864098387183:android:276521e02265195f3cc71a",
+        "android_client_info": {
+          "package_name": "com.silver.sleeptimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864098387183-ucr2kbqftgtrut37570kkclpl21f30k8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.silver.sleeptimer",
+            "certificate_hash": "243ebc24167032f73f4386383e94d4023c708c15"
+          }
+        },
+        {
+          "client_id": "864098387183-g48hegluhl2id2qfchd682mnqa1jvctg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9xvS04M95A27ppR7mj1N-MWn3_vvTAkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864098387183-g48hegluhl2id2qfchd682mnqa1jvctg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
