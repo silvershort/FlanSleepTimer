@@ -21,8 +21,9 @@ class AppVersionCheck(private val context: Context) {
     }
 
     private fun initRemoteConfig() {
+        // 3시간 간격으로 fetch
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(0).build()
+            .setMinimumFetchIntervalInSeconds((60 * 60 * 3).toLong()).build()
         config.setConfigSettingsAsync(configSettings)
     }
 
