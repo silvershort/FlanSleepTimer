@@ -22,4 +22,6 @@
     <string name="app_update">새로운 버전이 출시되었습니다. 업데이트를 해주세요</string>
     <string name="common_update">업데이트</string>
     <string name="common_cancel">취소</string>
+    <string name="whitelist_add">정확한 동작을 위해서 배터리 사용량 최적화 제외를 해주세요</string>
+    <string name="common_ok">확인</string>
 </resources>
