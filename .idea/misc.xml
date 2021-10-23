@@ -5,8 +5,13 @@
       <map>
         <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable-v21/app_widget_background.xml" value="0.12129629629629629" />
         <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.1259259259259259" />
+        <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.12129629629629629" />
+        <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable/ic_brightness_3_black_24dp.xml" value="0.12129629629629629" />
+        <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable/ic_launcher_background.xml" value="0.12129629629629629" />
+        <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/drawable/icon_background.xml" value="0.12129629629629629" />
         <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/layout/new_app_widget.xml" value="0.176" />
+        <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/mipmap-anydpi-v26/icon.xml" value="0.12129629629629629" />
         <entry key="..\:/Users/Han/AndroidStudioProjects/FlanSleepTimer/app/src/main/res/xml/remote_config_default.xml" value="0.1" />
       </map>
     </option>

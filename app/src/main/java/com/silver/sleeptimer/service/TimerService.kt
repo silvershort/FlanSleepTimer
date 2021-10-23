@@ -35,7 +35,7 @@ class TimerService : Service() {
         }
         baseTime = intent.getLongExtra("baseTime", System.currentTimeMillis())
         outTime = baseTime - System.currentTimeMillis()
-        setAlarmManager(outTime)
+        setAlarmManager(baseTime + 1000)
 
         // 포그라운드 서비스에서 쓰레드를 돌리면서 노티피케이션을 업데이트 해주고 최종적으로 타이머 동작을 하게 한다.
         timeThread = Thread {

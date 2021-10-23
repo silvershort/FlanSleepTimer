@@ -28,6 +28,27 @@ class MainActivity : AppCompatActivity() {
         appVersionCheck.versionCheck()
     }
 
+    /*// 화이트 리스트 추가 됐는지 확인
+    private fun checkWhitelist(): Boolean {
+        val powerManager: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+         return powerManager.isIgnoringBatteryOptimizations(packageName)
+    }
+
+    // 화이트 리스트 추가할껀지 묻고 설청창으로 이동
+    private fun showWhitelistDialog() {
+        var dialog: AlertDialog? = null
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.whitelist_add))
+            .setPositiveButton(getString(R.string.common_ok)) { _, _ ->
+                startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+            }
+            .setNegativeButton(getString(R.string.common_cancel)) { _, _ ->
+                dialog?.dismiss()
+            }
+        dialog = builder.create()
+        dialog.show()
+    }*/
+
     // 위젯으로 타이머 실행했을 경우 앱 실행시 데이터를 최신화해준다
     override fun onResume() {
         super.onResume()

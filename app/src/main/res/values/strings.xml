@@ -22,4 +22,6 @@
     <string name="app_update">New version availble. Please update app</string>
     <string name="common_update">Update</string>
     <string name="common_cancel">Cancel</string>
+    <string name="whitelist_add">Exclude from battery usage optimization list for correct operation</string>
+    <string name="common_ok">OK</string>
 </resources>
