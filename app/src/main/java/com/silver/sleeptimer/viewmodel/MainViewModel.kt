@@ -82,7 +82,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
             } else {
                 stopTimer()
                 run.value = false
-//                _state.value = Flan.SLEEP.state
+                _state.value = Flan.SLEEP.state
             }
         }
     }
@@ -175,15 +175,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application)  {
         val now = System.currentTimeMillis()
         val outTime = baseTime - now
         val setTime = preferenceManager.getSetTime()
+        if (outTime <= setTime / 2) {
+            if (_state.value != Flan.SLEEP.state) {
+                _state.value = Flan.SLEEPY.state
+            }
+        }
         if (outTime <= 0) {
             run.value = false
             _state.value = Flan.SLEEP.state
             return 0
-        }
-        if (outTime <= setTime / 2) {
-            if (_state.value == Flan.AWAKE.state) {
-                _state.value = Flan.SLEEPY.state
-            }
         }
         return outTime
     }

@@ -24,6 +24,9 @@ class TimerService : Service() {
     private var cheMute = false
     private var cheBlue = false
     private var alive = true
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var alarmIntent: Intent
+    private lateinit var alarmPendingIntent: PendingIntent
 
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -99,15 +102,16 @@ class TimerService : Service() {
     private fun timeout() {
         val mainIntent = Intent(applicationContext, MainActivity::class.java)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        alarmManager.cancel(alarmPendingIntent)
         startActivity(mainIntent)
         stopSelf()
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun setAlarmManager(triggerTime: Long) {
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
-        val alarmPendingIntent = PendingIntent.getBroadcast(applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
+        alarmPendingIntent = PendingIntent.getBroadcast(applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             triggerTime,

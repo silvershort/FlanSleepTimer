@@ -3,6 +3,7 @@ package com.silver.sleeptimer
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.silver.sleeptimer.service.TimerService
 import com.silver.sleeptimer.util.SharedPreferenceManager
 import com.silver.sleeptimer.util.TimerFunction
@@ -13,24 +14,21 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null) {
             val preferenceManager = SharedPreferenceManager.getInstance(context)
-            val baseTime = preferenceManager.getBaseTime() - 1000
-            val now = System.currentTimeMillis()
-            if (baseTime < now) {
-                // 타이머 동작 실행
-                if (preferenceManager.getStop()) {
-                    TimerFunction.audioStop(context)
-                }
-                if (preferenceManager.getBlue()) {
-                    TimerFunction.offBlue(context)
-                }
-                if (preferenceManager.getMute()) {
-                    TimerFunction.audioMute(context)
-                }
-
-                // 포그라운드 서비스 종료
-                val serviceIntent = Intent(context, TimerService::class.java)
-                context.stopService(serviceIntent)
+            
+            // 타이머 동작 실행
+            if (preferenceManager.getStop()) {
+                TimerFunction.audioStop(context)
             }
+            if (preferenceManager.getBlue()) {
+                TimerFunction.offBlue(context)
+            }
+            if (preferenceManager.getMute()) {
+                TimerFunction.audioMute(context)
+            }
+
+            // 포그라운드 서비스 종료
+            val serviceIntent = Intent(context, TimerService::class.java)
+            context.stopService(serviceIntent)
         }
     }
 }
