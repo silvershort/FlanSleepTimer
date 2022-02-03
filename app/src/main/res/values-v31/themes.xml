@@ -4,9 +4,12 @@
     Having themes.xml for v31 variant because @android:dimen/system_app_widget_background_radius
      and @android:dimen/system_app_widget_internal_padding requires API level 31
     -->
-    <style name="Theme.AppCompat.NoActionBar.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault.DayNight">
+    <style name="Theme.FlanSleepTimer" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
         <item name="appWidgetPadding">16dp</item>
         <item name="appWidgetInnerRadius">@android:dimen/system_app_widget_inner_radius</item>
+
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/logo</item>
     </style>
 </resources>

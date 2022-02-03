@@ -3,9 +3,9 @@ package com.silver.sleeptimer.service
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.silver.sleeptimer.AlarmReceiver
 import com.example.sleeptimer.R
@@ -52,7 +52,9 @@ class TimerService : Service() {
                             applicationContext,
                             0,
                             notificationIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                            } else PendingIntent.FLAG_UPDATE_CURRENT
                         )
                     msg = if (outTime / 1000 / 60 <= 0) {
                         getString(R.string.timeout)
@@ -75,7 +77,6 @@ class TimerService : Service() {
             } catch (e: Exception) {
             } finally {
                 if (alive) {
-                    Log.i("로그", "stop : $cheStop\nche_mute : $cheMute\nche_blue : $cheBlue")
                     if (cheStop) {
                         TimerFunction.audioStop(applicationContext)
                     }
@@ -111,7 +112,14 @@ class TimerService : Service() {
     private fun setAlarmManager(triggerTime: Long) {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
-        alarmPendingIntent = PendingIntent.getBroadcast(applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getBroadcast(
+                applicationContext, 1001, alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getBroadcast(
+                applicationContext, 1001, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             triggerTime,

@@ -3,9 +3,12 @@
     <!--
     Having themes.xml for night-v31 because of the priority order of the resource qualifiers.
     -->
-    <style name="Theme.AppCompat.NoActionBar.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault.DayNight">
+    <style name="Theme.FlanSleepTimer" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
         <item name="appWidgetPadding">16dp</item>
         <item name="appWidgetInnerRadius">@android:dimen/system_app_widget_inner_radius</item>
+
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/logo</item>
     </style>
 </resources>
