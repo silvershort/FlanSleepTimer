@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:theme="@style/Theme.AppCompat.NoActionBar.AppWidgetContainer">
+    android:theme="@style/Theme.FlanSleepTimer">
 
     <TextView
         android:layout_width="match_parent"

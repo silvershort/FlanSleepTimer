@@ -10,8 +10,8 @@ android {
         applicationId "com.silver.sleeptimer"
         minSdkVersion 26
         targetSdkVersion 31
-        versionCode 3
-        versionName "1.2.0"
+        versionCode 4
+        versionName "1.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -48,6 +48,11 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-config:21.0.1'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // splash
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
+    implementation 'com.google.android.material:material:1.5.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.4.1'
