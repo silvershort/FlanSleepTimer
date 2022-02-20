@@ -1,45 +1,52 @@
 package com.silver.sleeptimer.view
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.PowerManager
-import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.sleeptimer.R
-import com.example.sleeptimer.databinding.ActivityMainBinding
-import com.silver.sleeptimer.firebase.AppVersionCheck
-import com.silver.sleeptimer.viewmodel.MainViewModel
+import com.silver.sleeptimer.ui.theme.FlanSleepTimerTheme
+import com.silver.sleeptimer.view.MainActivity.Companion.NORMAL
+import com.silver.sleeptimer.view.MainActivity.Companion.SLEEP
+import com.silver.sleeptimer.view.MainActivity.Companion.SLEEPY
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var mainViewModel: MainViewModel
+
+    companion object {
+        const val NORMAL = 0
+        const val SLEEPY = 1
+        const val SLEEP = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        binding.apply {
-            lifecycleOwner = this@MainActivity
-            viewModel = mainViewModel
+        setContent {
+            FlanSleepTimerTheme {
+                MyApp()
+            }
         }
-        setContentView(binding.root)
 
-        // 앱 버전 체크
+        /*// 앱 버전 체크
         val appVersionCheck = AppVersionCheck(this@MainActivity)
         appVersionCheck.versionCheck()
         if (!checkWhitelist()) {
             showWhitelistDialog()
-        }
+        }*/
     }
-
-    // 화이트 리스트 추가 됐는지 확인
+    /*// 화이트 리스트 추가 됐는지 확인
     private fun checkWhitelist(): Boolean {
         val powerManager: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
          return powerManager.isIgnoringBatteryOptimizations(packageName)
@@ -62,17 +69,143 @@ class MainActivity : AppCompatActivity() {
             }
         dialog = builder.create()
         dialog.show()
-    }
+    }*/
+}
 
-    // 위젯으로 타이머 실행했을 경우 앱 실행시 데이터를 최신화해준다
-    override fun onResume() {
-        super.onResume()
-        mainViewModel.viewModelDataSet()
-    }
-
-    // 앱이 Pause 상태가 됐을때 자원을 계속 소모하지 않도록 핸들러를 멈춰준다
-    override fun onPause() {
-        mainViewModel.timerPause()
-        super.onPause()
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    FlanSleepTimerTheme {
+        MyApp()
     }
 }
+
+@Composable
+fun MyApp() {
+    // checkbox variable
+    var cheStop by remember { mutableStateOf(true) }
+    var cheMute by remember { mutableStateOf(false) }
+    var cheBlue by remember { mutableStateOf(false) }
+
+    // image variable
+    var flanState by remember { mutableStateOf(NORMAL) }
+
+    // timer variable
+    var time by remember { mutableStateOf(0L) }
+
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                TimerFunctionCheckBox(state = cheStop,
+                    onCheckBoxClick = { cheStop = it },
+                    label = stringResource(R.string.cb_media_stop))
+                TimerFunctionCheckBox(state = cheMute,
+                    onCheckBoxClick = { cheMute = it },
+                    label = stringResource(R.string.cb_media_mute))
+                TimerFunctionCheckBox(state = cheBlue,
+                    onCheckBoxClick = { cheBlue = it },
+                    label = stringResource(R.string.cb_blue))
+            }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = when(flanState) {
+                        NORMAL -> {
+                            R.drawable.image1
+                        }
+                        SLEEPY -> {
+                            R.drawable.image2
+                        }
+                        SLEEP -> {
+                            R.drawable.image3
+                        }
+                        else -> {
+                            R.drawable.image1
+                        }
+                    }),
+                    contentDescription = stringResource(R.string.flan)
+                )
+                Text(
+                    text = convertTime(time),
+                    fontSize = 80.sp
+                )
+            }
+            Column() {
+                Row(
+                ) {
+                    Button(
+                        onClick = {
+                              time += 60 * 60 * 1000
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(60.dp)
+                    ) {
+                        Text(text = "1H")
+                    }
+                    Button(
+                        onClick = {
+                            time += 30 * 60 * 1000
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(60.dp)
+                    ) {
+                        Text(text = "30M")
+                    }
+                    Button(
+                        onClick = {
+                            time += 5 * 60 * 1000
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(60.dp)
+                    ) {
+                        Text(text = "5M")
+                    }
+                    Button(
+                        onClick = {
+                            time = 0
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(60.dp)
+                    ) {
+                        Text(text = "리셋")
+                    }
+                }
+                Button(
+                    onClick = {
+                        if (!cheStop && !cheMute && !cheBlue) {
+                            return@Button
+                        }
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                ) {
+                    Text(text = "시작")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TimerFunctionCheckBox(state: Boolean, onCheckBoxClick: (Boolean) -> Unit, label: String) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = state, onCheckedChange = onCheckBoxClick)
+        Text(text = label)
+    }
+}
+
+fun convertTime(time: Long): String = String.format("%02d:%02d:%02d", time / 1000L / 60L / 60L, time / 1000L / 60L % 60L, time / 1000L % 60L)

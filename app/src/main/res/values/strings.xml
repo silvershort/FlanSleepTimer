@@ -24,4 +24,5 @@
     <string name="common_cancel">Cancel</string>
     <string name="whitelist_add">Exclude from battery usage optimization list for correct operation</string>
     <string name="common_ok">OK</string>
+    <string name="flan">flandre</string>
 </resources>

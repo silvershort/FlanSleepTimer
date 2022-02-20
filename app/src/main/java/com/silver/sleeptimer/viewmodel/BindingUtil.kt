@@ -1,3 +1,4 @@
+/*
 package com.silver.sleeptimer.viewmodel
 
 import android.widget.ImageView
@@ -25,4 +26,4 @@ object BindingUtil {
             false -> view.text = view.context.getString(R.string.btn_start)
         }
     }
-}
+}*/

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
+    <!--<data>
         <variable
             name="viewModel"
             type="com.silver.sleeptimer.viewmodel.MainViewModel" />
@@ -128,5 +128,5 @@
             app:layout_constraintVertical_bias="0.498"
             tools:layout_editor_absoluteX="0dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </layout>
